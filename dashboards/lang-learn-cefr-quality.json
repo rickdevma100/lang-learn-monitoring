@@ -1,0 +1,120 @@
+{
+  "__inputs": [],
+  "__requires": [
+    {"type": "grafana", "id": "grafana", "name": "Grafana", "version": "10.0.0"},
+    {"type": "datasource", "id": "prometheus", "name": "Prometheus", "version": "1.0.0"}
+  ],
+  "annotations": {"list": []},
+  "description": "Lang-Learn – CEFR Quality: score heatmap, per-level breakdown, mismatch rate, user feedback.",
+  "editable": true,
+  "panels": [
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {"defaults": {"unit": "percentunit"}, "overrides": []},
+      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 0},
+      "id": 1,
+      "options": {"calculate": false, "color": {"exponent": 0.5, "mode": "scheme", "scheme": "Oranges"}},
+      "targets": [
+        {
+          "expr": "sum by (le) (rate(lang_learn_cefr_match_score_distribution_bucket[5m]))",
+          "legendFormat": "{{le}}",
+          "refId": "A"
+        }
+      ],
+      "title": "CEFR Score Heatmap",
+      "type": "heatmap"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {"defaults": {"unit": "percentunit"}, "overrides": []},
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
+      "id": 2,
+      "targets": [
+        {
+          "expr": "avg by (level) (lang_learn_cefr_match_score)",
+          "legendFormat": "{{level}}",
+          "refId": "A"
+        }
+      ],
+      "title": "CEFR Score per Level",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {"defaults": {"unit": "percentunit"}, "overrides": []},
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8},
+      "id": 3,
+      "targets": [
+        {
+          "expr": "avg by (language) (lang_learn_cefr_match_score)",
+          "legendFormat": "{{language}}",
+          "refId": "A"
+        }
+      ],
+      "title": "CEFR Score per Language",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {"defaults": {"unit": "percentunit"}, "overrides": []},
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 16},
+      "id": 4,
+      "targets": [
+        {
+          "expr": "rate(lang_learn_cefr_mismatches_total[1h]) / rate(lang_learn_requests_total[1h])",
+          "legendFormat": "{{level}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Mismatch Rate per Level",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {"defaults": {"unit": "short"}, "overrides": []},
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 16},
+      "id": 5,
+      "options": {"pieType": "pie"},
+      "targets": [
+        {
+          "expr": "sum by (rating) (rate(lang_learn_user_feedback_total[1h]))",
+          "legendFormat": "{{rating}}",
+          "refId": "A"
+        }
+      ],
+      "title": "User Feedback (Up vs Down)",
+      "type": "piechart"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {"defaults": {"unit": "percentunit"}, "overrides": []},
+      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 24},
+      "id": 6,
+      "targets": [
+        {
+          "expr": "min by (level) (lang_learn_cefr_match_score)",
+          "legendFormat": "min {{level}}",
+          "refId": "A"
+        },
+        {
+          "expr": "avg by (level) (lang_learn_cefr_match_score)",
+          "legendFormat": "avg {{level}}",
+          "refId": "B"
+        },
+        {
+          "expr": "max by (level) (lang_learn_cefr_match_score)",
+          "legendFormat": "max {{level}}",
+          "refId": "C"
+        }
+      ],
+      "title": "Score Distribution (min/avg/max per Level)",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "15s",
+  "schemaVersion": 38,
+  "tags": ["lang-learn", "cefr", "quality"],
+  "title": "Lang-Learn — CEFR Quality",
+  "uid": "lang-learn-cefr-quality",
+  "version": 1
+}
