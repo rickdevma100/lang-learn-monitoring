@@ -163,7 +163,9 @@
       },
       "fieldConfig": {
         "defaults": {
-          "unit": "percentunit"
+          "unit": "percent",
+          "min": 0,
+          "max": 100
         },
         "overrides": []
       },
@@ -176,7 +178,7 @@
       "id": 4,
       "targets": [
         {
-          "expr": "(sum(rate(lang_learn_requests_total{status=\"error\"}[5m])) or vector(0)) / (sum(rate(lang_learn_requests_total[5m])) > 0) * 100 or vector(0)",
+          "expr": "((sum(rate(lang_learn_requests_total{status=\"error\"}[5m])) or vector(0)) / (sum(rate(lang_learn_requests_total[5m])) > 0) or vector(0)) * 100",
           "legendFormat": "Error %",
           "refId": "A"
         }
@@ -269,8 +271,14 @@
       "type": "table",
       "options": {
         "footer": {
-          "enablePagination": true
-        }
+          "enablePagination": false
+        },
+        "sortBy": [
+          {
+            "displayName": "Pod Name",
+            "desc": false
+          }
+        ]
       },
       "transformations": [
         {
@@ -301,5 +309,5 @@
   ],
   "title": "Lang-Learn \u2014 Overview",
   "uid": "lang-learn-overview",
-  "version": 2
+  "version": 3
 }
