@@ -21,11 +21,23 @@ data:
     {
       "__inputs": [],
       "__requires": [
-        {"type": "grafana", "id": "grafana", "name": "Grafana", "version": "10.0.0"},
-        {"type": "datasource", "id": "prometheus", "name": "Prometheus", "version": "1.0.0"}
+        {
+          "type": "grafana",
+          "id": "grafana",
+          "name": "Grafana",
+          "version": "10.0.0"
+        },
+        {
+          "type": "datasource",
+          "id": "prometheus",
+          "name": "Prometheus",
+          "version": "1.0.0"
+        }
       ],
-      "annotations": {"list": []},
-      "description": "Lang-Learn - Overview: requests, CEFR score, latency, errors, tokens, pods.",
+      "annotations": {
+        "list": []
+      },
+      "description": "Lang-Learn \u2013 Overview: requests, CEFR score, latency, errors, tokens, pods.",
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
@@ -33,17 +45,34 @@ data:
       "links": [],
       "panels": [
         {
-          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "fieldConfig": {
-            "defaults": {"color": {"mode": "palette-classic"}, "unit": "reqps"},
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "reqps"
+            },
             "overrides": []
           },
-          "gridPos": {"h": 6, "w": 8, "x": 0, "y": 0},
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 0,
+            "y": 0
+          },
           "id": 1,
-          "options": {"tooltip": {"mode": "single"}},
+          "options": {
+            "tooltip": {
+              "mode": "single"
+            }
+          },
           "targets": [
             {
-              "expr": "sum(rate(lang_learn_requests_total[5m]))",
+              "expr": "sum(rate(lang_learn_requests_total[5m])) or vector(0)",
               "legendFormat": "req/s",
               "refId": "A"
             }
@@ -52,16 +81,30 @@ data:
           "type": "timeseries"
         },
         {
-          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "fieldConfig": {
             "defaults": {
-              "color": {"mode": "thresholds"},
+              "color": {
+                "mode": "thresholds"
+              },
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
-                  {"color": "red", "value": null},
-                  {"color": "yellow", "value": 0.60},
-                  {"color": "green", "value": 0.75}
+                  {
+                    "color": "red",
+                    "value": null
+                  },
+                  {
+                    "color": "yellow",
+                    "value": 0.6
+                  },
+                  {
+                    "color": "green",
+                    "value": 0.75
+                  }
                 ]
               },
               "unit": "percentunit",
@@ -70,12 +113,23 @@ data:
             },
             "overrides": []
           },
-          "gridPos": {"h": 6, "w": 8, "x": 8, "y": 0},
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 8,
+            "y": 0
+          },
           "id": 2,
-          "options": {"reduceOptions": {"calcs": ["lastNotNull"]}},
+          "options": {
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ]
+            }
+          },
           "targets": [
             {
-              "expr": "avg(lang_learn_cefr_match_score)",
+              "expr": "avg(lang_learn_cefr_match_score) or vector(0)",
               "legendFormat": "Avg CEFR Score",
               "refId": "A"
             }
@@ -84,24 +138,37 @@ data:
           "type": "gauge"
         },
         {
-          "datasource": {"type": "prometheus", "uid": "prometheus"},
-          "fieldConfig": {"defaults": {"unit": "s"}, "overrides": []},
-          "gridPos": {"h": 6, "w": 8, "x": 16, "y": 0},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "s"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 16,
+            "y": 0
+          },
           "id": 3,
           "options": {},
           "targets": [
             {
-              "expr": "histogram_quantile(0.50, rate(lang_learn_latency_seconds_bucket[5m]))",
+              "expr": "histogram_quantile(0.50, sum by (le) (rate(lang_learn_latency_seconds_bucket[5m])))",
               "legendFormat": "p50",
               "refId": "A"
             },
             {
-              "expr": "histogram_quantile(0.95, rate(lang_learn_latency_seconds_bucket[5m]))",
+              "expr": "histogram_quantile(0.95, sum by (le) (rate(lang_learn_latency_seconds_bucket[5m])))",
               "legendFormat": "p95",
               "refId": "B"
             },
             {
-              "expr": "histogram_quantile(0.99, rate(lang_learn_latency_seconds_bucket[5m]))",
+              "expr": "histogram_quantile(0.99, sum by (le) (rate(lang_learn_latency_seconds_bucket[5m])))",
               "legendFormat": "p99",
               "refId": "C"
             }
@@ -110,13 +177,26 @@ data:
           "type": "timeseries"
         },
         {
-          "datasource": {"type": "prometheus", "uid": "prometheus"},
-          "fieldConfig": {"defaults": {"unit": "percentunit"}, "overrides": []},
-          "gridPos": {"h": 6, "w": 8, "x": 0, "y": 6},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "percentunit"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 0,
+            "y": 6
+          },
           "id": 4,
           "targets": [
             {
-              "expr": "rate(lang_learn_requests_total{status=\"error\"}[5m]) / rate(lang_learn_requests_total[5m]) * 100",
+              "expr": "(sum(rate(lang_learn_requests_total{status=\"error\"}[5m])) or vector(0)) / (sum(rate(lang_learn_requests_total[5m])) > 0) * 100 or vector(0)",
               "legendFormat": "Error %",
               "refId": "A"
             }
@@ -125,13 +205,26 @@ data:
           "type": "timeseries"
         },
         {
-          "datasource": {"type": "prometheus", "uid": "prometheus"},
-          "fieldConfig": {"defaults": {"unit": "short"}, "overrides": []},
-          "gridPos": {"h": 6, "w": 8, "x": 8, "y": 6},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 8,
+            "y": 6
+          },
           "id": 5,
           "targets": [
             {
-              "expr": "rate(lang_learn_tokens_generated_total[1m]) * 60",
+              "expr": "sum(rate(lang_learn_tokens_generated_total[1m])) * 60 or vector(0)",
               "legendFormat": "tokens/min",
               "refId": "A"
             }
@@ -140,13 +233,26 @@ data:
           "type": "timeseries"
         },
         {
-          "datasource": {"type": "prometheus", "uid": "prometheus"},
-          "fieldConfig": {"defaults": {"unit": "bytes"}, "overrides": []},
-          "gridPos": {"h": 6, "w": 8, "x": 16, "y": 6},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 16,
+            "y": 6
+          },
           "id": 6,
           "targets": [
             {
-              "expr": "lang_learn_gpu_memory_bytes",
+              "expr": "lang_learn_gpu_memory_bytes or vector(0)",
               "legendFormat": "GPU Memory",
               "refId": "A"
             }
@@ -155,46 +261,118 @@ data:
           "type": "timeseries"
         },
         {
-          "datasource": {"type": "prometheus", "uid": "prometheus"},
-          "fieldConfig": {"defaults": {}, "overrides": []},
-          "gridPos": {"h": 6, "w": 24, "x": 0, "y": 12},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 24,
+            "x": 0,
+            "y": 12
+          },
           "id": 7,
           "targets": [
             {
-              "expr": "kube_pod_info{namespace=\"lang-learn\"}",
-              "legendFormat": "{{pod}}",
+              "expr": "max by (pod, phase) (kube_pod_status_phase{namespace=\"lang-learn\"} == 1)",
+              "format": "table",
+              "instant": true,
+              "legendFormat": "",
               "refId": "A"
             }
           ],
           "title": "Pod Status",
-          "type": "table"
+          "type": "table",
+          "options": {
+            "footer": {
+              "enablePagination": true
+            }
+          },
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Time": true,
+                  "Value": true
+                },
+                "indexByName": {
+                  "pod": 0,
+                  "phase": 1
+                },
+                "renameByName": {
+                  "pod": "Pod Name",
+                  "phase": "Status"
+                }
+              }
+            }
+          ]
         }
       ],
       "refresh": "15s",
       "schemaVersion": 38,
-      "tags": ["lang-learn", "overview"],
-      "title": "Lang-Learn - Overview",
+      "tags": [
+        "lang-learn",
+        "overview"
+      ],
+      "title": "Lang-Learn \u2014 Overview",
       "uid": "lang-learn-overview",
-      "version": 1
+      "version": 2
     }
 
   lang-learn-cefr-quality.json: |
     {
       "__inputs": [],
       "__requires": [
-        {"type": "grafana", "id": "grafana", "name": "Grafana", "version": "10.0.0"},
-        {"type": "datasource", "id": "prometheus", "name": "Prometheus", "version": "1.0.0"}
+        {
+          "type": "grafana",
+          "id": "grafana",
+          "name": "Grafana",
+          "version": "10.0.0"
+        },
+        {
+          "type": "datasource",
+          "id": "prometheus",
+          "name": "Prometheus",
+          "version": "1.0.0"
+        }
       ],
-      "annotations": {"list": []},
-      "description": "Lang-Learn - CEFR Quality: score heatmap, per-level breakdown, mismatch rate, user feedback.",
+      "annotations": {
+        "list": []
+      },
+      "description": "Lang-Learn \u2013 CEFR Quality: score heatmap, per-level breakdown, mismatch rate, user feedback.",
       "editable": true,
       "panels": [
         {
-          "datasource": {"type": "prometheus", "uid": "prometheus"},
-          "fieldConfig": {"defaults": {"unit": "percentunit"}, "overrides": []},
-          "gridPos": {"h": 8, "w": 24, "x": 0, "y": 0},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "percentunit"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 0
+          },
           "id": 1,
-          "options": {"calculate": false, "color": {"exponent": 0.5, "mode": "scheme", "scheme": "Oranges"}},
+          "options": {
+            "calculate": false,
+            "color": {
+              "exponent": 0.5,
+              "mode": "scheme",
+              "scheme": "Oranges"
+            }
+          },
           "targets": [
             {
               "expr": "sum by (le) (rate(lang_learn_cefr_match_score_distribution_bucket[5m]))",
@@ -206,9 +384,22 @@ data:
           "type": "heatmap"
         },
         {
-          "datasource": {"type": "prometheus", "uid": "prometheus"},
-          "fieldConfig": {"defaults": {"unit": "percentunit"}, "overrides": []},
-          "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "percentunit"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 8
+          },
           "id": 2,
           "targets": [
             {
@@ -221,9 +412,22 @@ data:
           "type": "timeseries"
         },
         {
-          "datasource": {"type": "prometheus", "uid": "prometheus"},
-          "fieldConfig": {"defaults": {"unit": "percentunit"}, "overrides": []},
-          "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "percentunit"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 8
+          },
           "id": 3,
           "targets": [
             {
@@ -236,13 +440,26 @@ data:
           "type": "timeseries"
         },
         {
-          "datasource": {"type": "prometheus", "uid": "prometheus"},
-          "fieldConfig": {"defaults": {"unit": "percentunit"}, "overrides": []},
-          "gridPos": {"h": 8, "w": 12, "x": 0, "y": 16},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "percentunit"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 16
+          },
           "id": 4,
           "targets": [
             {
-              "expr": "rate(lang_learn_cefr_mismatches_total[1h]) / rate(lang_learn_requests_total[1h])",
+              "expr": "(sum by (level) (rate(lang_learn_cefr_mismatches_total[1h])) or vector(0)) / (sum by (level) (rate(lang_learn_requests_total[1h])) > 0) or vector(0)",
               "legendFormat": "{{level}}",
               "refId": "A"
             }
@@ -251,14 +468,29 @@ data:
           "type": "timeseries"
         },
         {
-          "datasource": {"type": "prometheus", "uid": "prometheus"},
-          "fieldConfig": {"defaults": {"unit": "short"}, "overrides": []},
-          "gridPos": {"h": 8, "w": 12, "x": 12, "y": 16},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 16
+          },
           "id": 5,
-          "options": {"pieType": "pie"},
+          "options": {
+            "pieType": "pie"
+          },
           "targets": [
             {
-              "expr": "sum by (rating) (rate(lang_learn_user_feedback_total[1h]))",
+              "expr": "sum by (rating) (rate(lang_learn_user_feedback_total[1h])) or vector(0)",
               "legendFormat": "{{rating}}",
               "refId": "A"
             }
@@ -267,9 +499,22 @@ data:
           "type": "piechart"
         },
         {
-          "datasource": {"type": "prometheus", "uid": "prometheus"},
-          "fieldConfig": {"defaults": {"unit": "percentunit"}, "overrides": []},
-          "gridPos": {"h": 8, "w": 24, "x": 0, "y": 24},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "percentunit"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 24
+          },
           "id": 6,
           "targets": [
             {
@@ -294,20 +539,36 @@ data:
       ],
       "refresh": "15s",
       "schemaVersion": 38,
-      "tags": ["lang-learn", "cefr", "quality"],
-      "title": "Lang-Learn - CEFR Quality",
+      "tags": [
+        "lang-learn",
+        "cefr",
+        "quality"
+      ],
+      "title": "Lang-Learn \u2014 CEFR Quality",
       "uid": "lang-learn-cefr-quality",
-      "version": 1
+      "version": 2
     }
 
   lang-learn-cache.json: |
     {
       "__inputs": [],
       "__requires": [
-        {"type": "grafana", "id": "grafana", "name": "Grafana", "version": "10.0.0"},
-        {"type": "datasource", "id": "prometheus", "name": "Prometheus", "version": "1.0.0"}
+        {
+          "type": "grafana",
+          "id": "grafana",
+          "name": "Grafana",
+          "version": "10.0.0"
+        },
+        {
+          "type": "datasource",
+          "id": "prometheus",
+          "name": "Prometheus",
+          "version": "1.0.0"
+        }
       ],
-      "annotations": {"list": []},
+      "annotations": {
+        "list": []
+      },
       "description": "Lang-Learn - Cache Performance: hit rates, misses, similarity metrics.",
       "editable": true,
       "fiscalYearStartMonth": 0,
@@ -316,16 +577,30 @@ data:
       "links": [],
       "panels": [
         {
-          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "fieldConfig": {
             "defaults": {
-              "color": {"mode": "thresholds"},
+              "color": {
+                "mode": "thresholds"
+              },
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
-                  {"color": "red", "value": null},
-                  {"color": "yellow", "value": 0.5},
-                  {"color": "green", "value": 0.8}
+                  {
+                    "color": "red",
+                    "value": null
+                  },
+                  {
+                    "color": "yellow",
+                    "value": 0.5
+                  },
+                  {
+                    "color": "green",
+                    "value": 0.8
+                  }
                 ]
               },
               "unit": "percentunit",
@@ -333,12 +608,23 @@ data:
               "max": 1
             }
           },
-          "gridPos": {"h": 6, "w": 8, "x": 0, "y": 0},
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 0,
+            "y": 0
+          },
           "id": 1,
-          "options": {"reduceOptions": {"calcs": ["lastNotNull"]}},
+          "options": {
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ]
+            }
+          },
           "targets": [
             {
-              "expr": "sum(rate(lang_learn_cache_requests_total{status=\"hit\"}[5m])) / sum(rate(lang_learn_cache_requests_total[5m]))",
+              "expr": "(sum(rate(lang_learn_cache_requests_total{status=\"hit\"}[5m])) or vector(0)) / (sum(rate(lang_learn_cache_requests_total[5m])) > 0) or vector(0)",
               "legendFormat": "Cache Hit Rate",
               "refId": "A"
             }
@@ -347,14 +633,29 @@ data:
           "type": "gauge"
         },
         {
-          "datasource": {"type": "prometheus", "uid": "prometheus"},
-          "fieldConfig": {"defaults": {"unit": "short"}, "overrides": []},
-          "gridPos": {"h": 6, "w": 8, "x": 8, "y": 0},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 8,
+            "y": 0
+          },
           "id": 2,
-          "options": {"pieType": "pie"},
+          "options": {
+            "pieType": "pie"
+          },
           "targets": [
             {
-              "expr": "sum by (status) (rate(lang_learn_cache_requests_total[1h]))",
+              "expr": "sum by (status) (rate(lang_learn_cache_requests_total[1h])) or vector(0)",
               "legendFormat": "{{status}}",
               "refId": "A"
             }
@@ -363,23 +664,33 @@ data:
           "type": "piechart"
         },
         {
-          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "fieldConfig": {
             "defaults": {
-              "color": {"mode": "palette-classic"},
+              "color": {
+                "mode": "palette-classic"
+              },
               "unit": "percentunit"
             }
           },
-          "gridPos": {"h": 6, "w": 8, "x": 16, "y": 0},
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 16,
+            "y": 0
+          },
           "id": 3,
           "targets": [
             {
-              "expr": "histogram_quantile(0.95, rate(lang_learn_cache_similarity_bucket[5m]))",
+              "expr": "histogram_quantile(0.95, sum by (le) (rate(lang_learn_cache_similarity_bucket[5m])))",
               "legendFormat": "p95 Similarity",
               "refId": "A"
             },
             {
-              "expr": "histogram_quantile(0.50, rate(lang_learn_cache_similarity_bucket[5m]))",
+              "expr": "histogram_quantile(0.50, sum by (le) (rate(lang_learn_cache_similarity_bucket[5m])))",
               "legendFormat": "p50 Similarity",
               "refId": "B"
             }
@@ -388,13 +699,25 @@ data:
           "type": "timeseries"
         },
         {
-          "datasource": {"type": "prometheus", "uid": "prometheus"},
-          "fieldConfig": {"defaults": {"unit": "reqps"}},
-          "gridPos": {"h": 8, "w": 24, "x": 0, "y": 6},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "reqps"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 6
+          },
           "id": 4,
           "targets": [
             {
-              "expr": "sum by (status) (rate(lang_learn_cache_requests_total[5m]))",
+              "expr": "sum by (status) (rate(lang_learn_cache_requests_total[5m])) or vector(0)",
               "legendFormat": "{{status}}",
               "refId": "A"
             }
@@ -405,9 +728,11 @@ data:
       ],
       "refresh": "15s",
       "schemaVersion": 38,
-      "tags": ["lang-learn", "cache"],
+      "tags": [
+        "lang-learn",
+        "cache"
+      ],
       "title": "Lang-Learn - Cache Performance",
       "uid": "lang-learn-cache",
-      "version": 1
+      "version": 2
     }
-

@@ -1,10 +1,22 @@
 {
   "__inputs": [],
   "__requires": [
-    {"type": "grafana", "id": "grafana", "name": "Grafana", "version": "10.0.0"},
-    {"type": "datasource", "id": "prometheus", "name": "Prometheus", "version": "1.0.0"}
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "10.0.0"
+    },
+    {
+      "type": "datasource",
+      "id": "prometheus",
+      "name": "Prometheus",
+      "version": "1.0.0"
+    }
   ],
-  "annotations": {"list": []},
+  "annotations": {
+    "list": []
+  },
   "description": "Lang-Learn - Cache Performance: hit rates, misses, similarity metrics.",
   "editable": true,
   "fiscalYearStartMonth": 0,
@@ -13,16 +25,30 @@
   "links": [],
   "panels": [
     {
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
-          "color": {"mode": "thresholds"},
+          "color": {
+            "mode": "thresholds"
+          },
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              {"color": "red", "value": null},
-              {"color": "yellow", "value": 0.5},
-              {"color": "green", "value": 0.8}
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 0.5
+              },
+              {
+                "color": "green",
+                "value": 0.8
+              }
             ]
           },
           "unit": "percentunit",
@@ -30,12 +56,23 @@
           "max": 1
         }
       },
-      "gridPos": {"h": 6, "w": 8, "x": 0, "y": 0},
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      },
       "id": 1,
-      "options": {"reduceOptions": {"calcs": ["lastNotNull"]}},
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        }
+      },
       "targets": [
         {
-          "expr": "sum(rate(lang_learn_cache_requests_total{status=\"hit\"}[5m])) / sum(rate(lang_learn_cache_requests_total[5m]))",
+          "expr": "(sum(rate(lang_learn_cache_requests_total{status=\"hit\"}[5m])) or vector(0)) / (sum(rate(lang_learn_cache_requests_total[5m])) > 0) or vector(0)",
           "legendFormat": "Cache Hit Rate",
           "refId": "A"
         }
@@ -44,14 +81,29 @@
       "type": "gauge"
     },
     {
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
-      "fieldConfig": {"defaults": {"unit": "short"}, "overrides": []},
-      "gridPos": {"h": 6, "w": 8, "x": 8, "y": 0},
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 8,
+        "y": 0
+      },
       "id": 2,
-      "options": {"pieType": "pie"},
+      "options": {
+        "pieType": "pie"
+      },
       "targets": [
         {
-          "expr": "sum by (status) (rate(lang_learn_cache_requests_total[1h]))",
+          "expr": "sum by (status) (rate(lang_learn_cache_requests_total[1h])) or vector(0)",
           "legendFormat": "{{status}}",
           "refId": "A"
         }
@@ -60,23 +112,33 @@
       "type": "piechart"
     },
     {
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
-          "color": {"mode": "palette-classic"},
+          "color": {
+            "mode": "palette-classic"
+          },
           "unit": "percentunit"
         }
       },
-      "gridPos": {"h": 6, "w": 8, "x": 16, "y": 0},
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 16,
+        "y": 0
+      },
       "id": 3,
       "targets": [
         {
-          "expr": "histogram_quantile(0.95, rate(lang_learn_cache_similarity_bucket[5m]))",
+          "expr": "histogram_quantile(0.95, sum by (le) (rate(lang_learn_cache_similarity_bucket[5m])))",
           "legendFormat": "p95 Similarity",
           "refId": "A"
         },
         {
-          "expr": "histogram_quantile(0.50, rate(lang_learn_cache_similarity_bucket[5m]))",
+          "expr": "histogram_quantile(0.50, sum by (le) (rate(lang_learn_cache_similarity_bucket[5m])))",
           "legendFormat": "p50 Similarity",
           "refId": "B"
         }
@@ -85,13 +147,25 @@
       "type": "timeseries"
     },
     {
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
-      "fieldConfig": {"defaults": {"unit": "reqps"}},
-      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 6},
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps"
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 6
+      },
       "id": 4,
       "targets": [
         {
-          "expr": "sum by (status) (rate(lang_learn_cache_requests_total[5m]))",
+          "expr": "sum by (status) (rate(lang_learn_cache_requests_total[5m])) or vector(0)",
           "legendFormat": "{{status}}",
           "refId": "A"
         }
@@ -102,8 +176,11 @@
   ],
   "refresh": "15s",
   "schemaVersion": 38,
-  "tags": ["lang-learn", "cache"],
+  "tags": [
+    "lang-learn",
+    "cache"
+  ],
   "title": "Lang-Learn - Cache Performance",
   "uid": "lang-learn-cache",
-  "version": 1
+  "version": 2
 }
