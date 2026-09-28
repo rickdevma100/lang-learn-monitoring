@@ -8,7 +8,7 @@ metadata:
 spec:
   ingressClassName: public
   rules:
-  - host: grafana.192.168.2.3.nip.io
+  - host: grafana.192.168.2.4.nip.io
     http:
       paths:
       - path: /
